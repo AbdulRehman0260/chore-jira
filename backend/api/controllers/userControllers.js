@@ -49,8 +49,8 @@ export const createUser = async (req, res) => {
 
 }
 
-//create login route for user
-// for this we need first to verify that the password entered is correct
+/* Create login route for user
+for this we need first to verify that the password entered is correct */
 
 export const userLogin = async (req, res) => {
     try {
@@ -63,13 +63,14 @@ export const userLogin = async (req, res) => {
             return new Error("Password entered is incorrect or user does not exist")
         }
 
-        //create a jwt token and attach it to a cookie. This cookie will be attached to the response object and will be checked
-        //to see if a cookie exists (user is authenticated)
+        /* Create a jwt token and attach it to a cookie. This cookie will be attached to the response object and will be checked
+        to see if a cookie exists (user is authenticated) */
         const payload = { user: user._id }
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" })
         res.cookie("token", token, {
             httpOnly: true
         })
+        console.log("Token being set:", token)
         return res.status(200).json({ message: "Signed in successfully" })
 
         //return res.status(200).json(user);
