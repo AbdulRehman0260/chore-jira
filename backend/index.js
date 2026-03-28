@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import cors from 'cors';
+import cors from "cors";
 import { ticketRouter } from "./api/routes/ticketRoutes.js";
 import { householdRouter } from "./api/routes/householdRoutes.js";
 import { connectDB } from "./db/config.js";
@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(loginMiddleware)
+app.use(loginMiddleware);
 app.use("/api/tickets", ticketRouter);
 app.use("/api/customers", userRouter);
 app.use("/api/households", householdRouter);
