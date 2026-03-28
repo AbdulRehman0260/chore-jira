@@ -7,6 +7,8 @@ const userRouter = express.Router();
 //create a user
 userRouter.post("/", createUser);
 userRouter.post("/login", userLogin)
+
+//testing if mounting protected route works or not
 userRouter.post("/testing", loginMiddleware, (_, res) => {
     res.send("CHecking Middleware works or not")
 }
