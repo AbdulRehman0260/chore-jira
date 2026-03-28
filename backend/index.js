@@ -19,10 +19,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(loginMiddleware);
-app.use("/api/tickets", ticketRouter);
+
+// Public routes (no auth required)
 app.use("/api/customers", userRouter);
-app.use("/api/households", householdRouter);
+
+// Protected routes (auth required)
+app.use("/api/tickets", loginMiddleware, ticketRouter);
+app.use("/api/households", loginMiddleware, householdRouter);
 
 //App is listening
 const port = process.env.PORT || 3000;
