@@ -10,14 +10,13 @@ const householdSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      index: true
+      index: true,
     },
     inviteCode: {
       type: String,
       required: true,
       unique: true,
-
-    }
+    },
   },
   {
     timestamps: true,
