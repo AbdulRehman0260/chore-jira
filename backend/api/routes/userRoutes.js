@@ -5,8 +5,11 @@ import { loginMiddleware } from "../../middleware/loginProtectedRoute.js";
 const userRouter = express.Router();
 
 //create a user
-
 userRouter.post("/", createUser);
 userRouter.post("/login", userLogin)
+userRouter.post("/testing", loginMiddleware, (_, res) => {
+    res.send("CHecking Middleware works or not")
+}
+)
 
 export { userRouter };
