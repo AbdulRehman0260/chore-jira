@@ -3,6 +3,11 @@ import { describe, it, expect, vi } from "vitest"
 //import functions ()
 import { hashedPassword, verifyPassword } from "../controllers/userControllers.js"
 
+/*
+Tests to check if user passwords are properly created and stored
+*/
+
+//password hasing test
 describe('hashedPassword', () => {
     it('should return a hash different from the original password', async () => {
         const password = 'testpassword123'
@@ -13,6 +18,7 @@ describe('hashedPassword', () => {
     })
 })
 
+//verifying password works test
 describe('verifyPassword', () => {
     it('should return true for matching password', async () => {
         const password = 'testPassword123'
@@ -29,3 +35,8 @@ describe('verifyPassword', () => {
         expect(result).toBe(false)
     })
 })
+
+/*
+Tests to check if Database is working as expected
+*/
+
