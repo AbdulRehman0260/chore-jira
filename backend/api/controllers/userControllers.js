@@ -63,14 +63,13 @@ export const userLogin = async (req, res) => {
 
     /* Create a jwt token and attach it to a cookie. This cookie will be attached to the response object and will be checked
         to see if a cookie exists (user is authenticated) */
-    const payload = { user: user._id };
+    const payload = { user }
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
     res.cookie("token", token, {
       httpOnly: true,
     });
-    console.log("Token being set:", token);
     return res.status(200).json({ message: "Signed in successfully" });
 
     //return res.status(200).json(user);

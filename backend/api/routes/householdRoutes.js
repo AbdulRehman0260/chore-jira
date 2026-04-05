@@ -3,7 +3,7 @@ import { createHousehold } from "../controllers/householdControllers.js";
 
 const householdRouter = express.Router();
 
-//post a ticket
-householdRouter.post("/", createHousehold);
+//creating a household
+householdRouter.post("/", createHousehold)
 
 export { householdRouter };
