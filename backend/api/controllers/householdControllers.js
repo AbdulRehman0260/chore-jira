@@ -1,4 +1,5 @@
 import { Household } from "../../db/models/householdModel.js";
+import { Membership } from "../../db/models/membershipModel.js";
 import crypto from "crypto";
 
 //function to generate a random invitecodes
@@ -26,7 +27,7 @@ export const createHousehold = async (req, res) => {
     }
 
     //getting the user id to attach to the household object
-    const user_id = req.user.user._id;
+    const user_id = req.user.user;
 
     //invite code generation
     const code = generateInviteCode(6);
@@ -41,6 +42,17 @@ export const createHousehold = async (req, res) => {
       });
 
     await newHouse.save();
+
+    //Membership creation
+    const newMembership = new Membership(
+      {
+        userId: newHouse.createdByUserId,
+        householdId: newHouse._id,
+        role: "OWNER"
+      });
+
+    await newMembership.save();
+
     return res.status(201).json(newHouse);
   } catch (error) {
     return res.status(500).json({ error: error.message });
