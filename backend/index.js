@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { ticketRouter } from "./api/routes/ticketRoutes.js";
 import { householdRouter } from "./api/routes/householdRoutes.js";
+import { membershipRouter } from "./api/routes/membershipRoutes.js";
 import { connectDB } from "./db/config.js";
 import { userRouter } from "./api/routes/userRoutes.js";
 import { loginMiddleware } from "./middleware/loginProtectedRoute.js";
@@ -26,6 +27,7 @@ app.use("/api/customers", userRouter);
 // Protected routes (auth required)
 app.use("/api/tickets", loginMiddleware, ticketRouter);
 app.use("/api/households", loginMiddleware, householdRouter);
+app.use("/api/memberships", loginMiddleware, membershipRouter);
 
 //App is listening
 const port = process.env.PORT || 3000;
