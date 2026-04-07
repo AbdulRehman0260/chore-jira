@@ -25,9 +25,9 @@ app.use(cookieParser());
 app.use("/api/customers", userRouter);
 
 // Protected routes (auth required)
-app.use("/api/tickets", loginMiddleware, ticketRouter);
-app.use("/api/households", loginMiddleware, householdRouter);
-app.use("/api/memberships", loginMiddleware, membershipRouter);
+app.use("/api/tickets", ticketRouter);
+app.use("/api/households", householdRouter);
+app.use("/api/memberships", membershipRouter);
 
 //App is listening
 const port = process.env.PORT || 3000;
