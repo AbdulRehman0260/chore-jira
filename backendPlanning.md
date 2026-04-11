@@ -9,3 +9,8 @@ Get tickets controller (by household and by users)
 Get individual ticket
 Update ticket controller
 Design the flow of the document and pages needed on front end
+First Page -> Login / Signup
+Household page (add / Join) as well as existing joined houses
+Ticket pages -> Based on the house selected, all tickets displayed, filter by assigned to me
+Also filter by status
+Open ticket with ability to edit
