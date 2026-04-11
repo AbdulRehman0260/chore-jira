@@ -1,4 +1,5 @@
 import { Membership } from "../../db/models/membershipModel.js";
+import { Ticket } from "../../db/models/ticketModel.js";
 
 /*Ticket creation flow:
 1. GET /api/tickets/households - Get user's households (for dropdown)
@@ -45,59 +46,128 @@ export const getHouseholdUsers = async (req, res) => {
 };
 
 // // Step 3: Create the ticket
-// export const createTicket = async (req, res) => {
-//   try {
-//     const loggedInUserId = req.user.user;
-//     const {
-//       householdId,
-//       assigneeId,
-//       category,
-//       description,
-//       points,
-//       dueDate
-//     } = req.body;
+export const createTicket = async (req, res) => {
+  try {
+    const loggedInUserId = req.user.user;
+    const {
+      householdId,
+      assigneeId,
+      category,
+      description,
+      points,
+      dueDate
+    } = req.body;
 
-//     // Verify user belongs to this household
-//     const userMembership = await Membership.findOne({
-//       userId: loggedInUserId,
-//       householdId: householdId
-//     });
+    // Verify user belongs to this household
+    const userMembership = await Membership.findOne({
+      userId: loggedInUserId,
+      householdId: householdId
+    });
 
-//     if (!userMembership) {
-//       return res.status(403).json({ error: "You don't belong to this household" });
-//     }
+    if (!userMembership) {
+      return res.status(403).json({ error: "You don't belong to this household" });
+    }
 
-//     // Verify assignee belongs to this household
-//     const assigneeMembership = await Membership.findOne({
-//       userId: assigneeId,
-//       householdId: householdId
-//     });
+    // Verify assignee belongs to this household
+    const assigneeMembership = await Membership.findOne({
+      userId: assigneeId,
+      householdId: householdId
+    });
 
-//     if (!assigneeMembership) {
-//       return res.status(400).json({ error: "Assignee doesn't belong to this household" });
-//     }
+    if (!assigneeMembership) {
+      return res.status(400).json({ error: "Assignee doesn't belong to this household" });
+    }
 
-//     // Create ticket (you'll need to import Ticket model)
-//     const newTicket = {
-//       assignerId: loggedInUserId,
-//       assigneeId: assigneeId,
-//       householdId: householdId,
-//       category: category,
-//       description: description,
-//       points: points || 2,
-//       dueDate: dueDate ? new Date(dueDate) : undefined
-//     };
+    // Create ticket ()
+    const newTicket = {
+      assignerId: loggedInUserId,
+      assigneeId: assigneeId,
+      householdId: householdId,
+      category: category,
+      description: description,
+      points: points || 2,
+      dueDate: dueDate ? new Date(dueDate) : undefined
+    };
 
-//     // TODO: Save ticket to database
-//     // const ticket = new Ticket(newTicket);
-//     // await ticket.save();
+    // TODO: Save ticket to database
+    const ticket = new Ticket(newTicket);
+    await ticket.save();
 
-//     return res.status(201).json({
-//       message: "Ticket created successfully",
-//       ticket: newTicket
-//     });
+    return res.status(201).json({
+      message: "Ticket created successfully",
+      ticket: newTicket
+    });
 
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//Get all tickets given a userId
+export const getTicketsByUserId = async (req, res) => {
+  try {
+    const user_id = req.user.user
+    const tickets = await Ticket.find({ assigneeId: user_id })
+      .populate('assignerId', 'name email')
+      .populate('assigneeId', 'name email')
+      .populate('householdId', 'name')
+    return res.status(200).json(tickets)
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+//Get all tickets given a householdId
+export const getTicketsByHouseholdId = async (req, res) => {
+  try {
+    const { householdId } = req.params
+    const tickets = await Ticket.find({ householdId: householdId })
+    return res.status(200).json(tickets)
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+//update a singular ticket
+export const updateTicket = async (req, res) => {
+  try {
+    const { ticketId } = req.params
+    const { status, description, points, dueDate } = req.body
+    const user_id = req.user.user
+
+    // Check if ticket exists
+    const ticket = await Ticket.findById(ticketId)
+    if (!ticket) {
+      return res.status(404).json({ error: "Ticket not found" })
+    }
+
+    // Check if user belongs to the household (can update)
+    const userMembership = await Membership.findOne({
+      userId: user_id,
+      householdId: ticket.householdId
+    })
+
+    if (!userMembership) {
+      return res.status(403).json({ error: "You don't belong to this household" })
+    }
+
+    // Prepare update object
+    const updateData = {}
+    if (status) updateData.status = status
+    if (description) updateData.description = description
+    if (points) updateData.points = points
+    if (dueDate) updateData.dueDate = new Date(dueDate)
+
+    const updatedTicket = await Ticket.findByIdAndUpdate(
+      ticketId,
+      { $set: updateData },
+      { returnDocument: 'after' } // Return updated document
+    ).populate('assignerId', 'name email')
+      .populate('assigneeId', 'name email')
+      .populate('householdId', 'name')
+
+    return res.status(200).json(updatedTicket)
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}

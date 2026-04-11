@@ -2,7 +2,10 @@ import express from "express";
 import {
     getUserHouseholds,
     getHouseholdUsers,
-    getTickets
+    getTicketsByUserId,
+    getTicketsByHouseholdId,
+    createTicket,
+    updateTicket
 } from "../controllers/ticketControllers.js";
 import { loginMiddleware } from "../../middleware/loginProtectedRoute.js";
 
@@ -17,9 +20,16 @@ ticketRouter.get("/households", getUserHouseholds);
 ticketRouter.get("/household/:householdId/users", getHouseholdUsers);
 
 // Create a new ticket
-// ticketRouter.post("/", createTicket);
+ticketRouter.post("/", createTicket);
 
-// Get tickets (placeholder)
-ticketRouter.get("/", getTickets);
+// Get tickets (by logged in userId)
+ticketRouter.get("/", getTicketsByUserId);
+
+// Get tickets by householdId
+ticketRouter.get("/household/:householdId", getTicketsByHouseholdId);
+
+//updating a ticket
+ticketRouter.patch("/:ticketId", updateTicket);
+
 
 export { ticketRouter };

@@ -5,3 +5,7 @@ If someone enters an invite code, mongodb will go fetch the household id from th
 Now that someone is part of the house, they should be able to create a ticket and assign it to the other member of the house
 A ticket should have a user that created it, a description of the ticket, the house that the ticket is being created for, the members it can be assigned to and who to assign to, the category of the work item, due date, status of the ticket, points for the ticket, timstamps that are needed.
 Create ticket controller
+Get tickets controller (by household and by users)
+Get individual ticket
+Update ticket controller
+Design the flow of the document and pages needed on front end
