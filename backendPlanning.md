@@ -14,3 +14,10 @@ Household page (add / Join) as well as existing joined houses
 Ticket pages -> Based on the house selected, all tickets displayed, filter by assigned to me
 Also filter by status
 Open ticket with ability to edit
+
+
+---Frontend
+
+Create a global state manager for authentication
+Local state using useState for components
+Hook Backend APIs using Cors and other things successfully
