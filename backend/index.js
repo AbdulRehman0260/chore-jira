@@ -1,13 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import { ticketRouter } from "./api/routes/ticketRoutes.js";
 import { householdRouter } from "./api/routes/householdRoutes.js";
 import { membershipRouter } from "./api/routes/membershipRoutes.js";
 import { connectDB } from "./db/config.js";
 import { userRouter } from "./api/routes/userRoutes.js";
 import { loginMiddleware } from "./middleware/loginProtectedRoute.js";
+import cors from "cors"
 dotenv.config();
 
 //mongodb access / database created
@@ -15,6 +15,12 @@ connectDB();
 
 //app instance created
 const app = express();
+
+// Simple CORS configuration
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 //middleware
 app.use(express.json());
