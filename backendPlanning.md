@@ -21,3 +21,5 @@ Open ticket with ability to edit
 Create a global state manager for authentication
 Local state using useState for components
 Hook Backend APIs using Cors and other things successfully
+Now I want docker build to be working
+
