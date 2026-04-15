@@ -35,6 +35,14 @@ app.use("/api/tickets", ticketRouter);
 app.use("/api/households", householdRouter);
 app.use("/api/memberships", membershipRouter);
 
+// Serve static frontend files
+app.use(express.static("/app/frontend/dist"));
+
+// Serve React app for any non-API routes
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile("/app/frontend/dist/index.html");
+});
+
 //App is listening
 const port = process.env.PORT || 3000;
 
