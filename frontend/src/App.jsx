@@ -10,13 +10,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route index element={
-          isAuthenticated ? (
-            <HomePage />
-          ) : (
-            <SignInPage />
-          )
-        } />
+        <Route index element={isAuthenticated ? (<HomePage />) : (<SignInPage />)} />
       </Routes>
     </>
   )
