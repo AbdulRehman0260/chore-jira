@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       default: "PENDING_HOUSEHOLD",
       index: true,
     },
+    points: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );

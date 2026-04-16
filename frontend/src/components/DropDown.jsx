@@ -1,11 +1,10 @@
+import { useHouseholdStore } from '../store/useHouseholdStore.js';
 import { axiosInstance } from '../lib/axios';
 import React, { useState, useEffect } from 'react'
 
 const Dropdown = () => {
+    const { household, households, noHouseholdMessage, setHousehold, setHouseholds, setNoHouseholdMessage } = useHouseholdStore()
     const [open, setOpen] = useState(false);
-    const [household, setHousehold] = useState(null);
-    const [households, setHouseholds] = useState([]);
-    const [noHouseholdMessage, setNoHouseholdMessage] = useState(false);
 
     useEffect(() => {
         const fetchHousehold = async () => {
@@ -28,9 +27,6 @@ const Dropdown = () => {
                         setHouseholds(data);
                         setHousehold(data[0]);
                     }
-                } else if (typeof data === 'object') {
-                    // Single household object
-                    setHousehold(data);
                 } else {
                     // Any other response type = no houses
                     setNoHouseholdMessage(true);
@@ -42,21 +38,21 @@ const Dropdown = () => {
             }
         };
         fetchHousehold();
-    }, []);
+    }, [setHousehold, setHouseholds, setNoHouseholdMessage]);
     return (
-        <div className="relative inline-block text-left">
+        <div className="relative">
             {/* Button */}
             <button
                 onClick={() => setOpen(!open)}
-                className="bg-brand-primary text-white px-4 py-2 rounded-xs w-48 text-left hover:bg-brand-primary-light cursor-pointer"
+                className="bg-brand-primary text-xs text-white rounded-xs text-left hover:bg-brand-primary-light cursor-pointer"
             >
                 {noHouseholdMessage ? "No House joined" : household?.name || "House"}
             </button>
 
             {/* Dropdown */}
             {open && !noHouseholdMessage && (
-                <div className="absolute w-48 bg-brand-surface rounded-xs shadow-md">
-                    <ul className="text-sm text-gray-700">
+                <div className="absolute bg-brand-surface rounded-xs shadow-xs mt-1">
+                    <ul className="text-xs text-gray-700">
                         {/* Map over households array */}
                         {households.map((householdItem, index) => (
                             <li

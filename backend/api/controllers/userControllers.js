@@ -75,3 +75,19 @@ export const userLogin = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const userPoints = async (req, res) => {
+  try {
+    console.log("Points endpoint hit");
+
+    // Handle missing points field for existing users
+    const points = req.user?.points || 0;
+    console.log("User points:", points);
+
+    return res.status(200).json({ points: points });
+
+  } catch (error) {
+    console.error("Error fetching user points:", error);
+    return res.status(500).json({ error: "Failed to fetch points" });
+  }
+}
