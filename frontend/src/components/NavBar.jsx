@@ -1,11 +1,20 @@
 import React from 'react'
 import Dropdown from './DropDown'
+import PointsCounter from './PointsCounter'
+import { useAuthStore } from '../store/useAuthStore'
+import { IoHomeOutline } from "react-icons/io5";
+
 
 const NavBar = () => {
+    const { logout } = useAuthStore()
     return (
-        <div className='flex min-w-full h-10 bg-brand-primary justify-end'>
-            <Dropdown />
-            <button className='text-white w-20 hover:bg-brand-primary-light cursor-pointer'>Logout</button>
+        <div className='flex bg-brand-primary justify-end items-center pb-1'>
+            <div className='flex items-center justify-center gap-1'>
+                <IoHomeOutline className='text-brand-white text-md' />
+                <Dropdown />
+                <PointsCounter />
+                <button onClick={logout} className='text-white w-14 text-xs hover:bg-brand-primary-light cursor-pointer'>Logout</button>
+            </div>
         </div>
 
     )

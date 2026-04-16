@@ -23,3 +23,8 @@ Local state using useState for components
 Hook Backend APIs using Cors and other things successfully
 Now I want docker build to be working
 
+
+--16th-April-2026
+Make a global store of households of a user
+
+
