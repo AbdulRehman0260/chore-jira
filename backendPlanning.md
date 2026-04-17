@@ -26,5 +26,9 @@ Now I want docker build to be working
 
 --16th-April-2026
 Make a global store of households of a user
+Make the Hero component with an image - This is done
+
+--Make the ticket creation UI and Backend
+
 
 
