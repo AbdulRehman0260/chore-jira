@@ -48,9 +48,9 @@ export const getHouseholdUsers = async (req, res) => {
 // // Step 3: Create the ticket
 export const createTicket = async (req, res) => {
   try {
-    const loggedInUserId = req.user.user;
     const {
       householdId,
+      assignerId,
       assigneeId,
       category,
       description,
@@ -58,29 +58,9 @@ export const createTicket = async (req, res) => {
       dueDate
     } = req.body;
 
-    // Verify user belongs to this household
-    const userMembership = await Membership.findOne({
-      userId: loggedInUserId,
-      householdId: householdId
-    });
-
-    if (!userMembership) {
-      return res.status(403).json({ error: "You don't belong to this household" });
-    }
-
-    // Verify assignee belongs to this household
-    const assigneeMembership = await Membership.findOne({
-      userId: assigneeId,
-      householdId: householdId
-    });
-
-    if (!assigneeMembership) {
-      return res.status(400).json({ error: "Assignee doesn't belong to this household" });
-    }
-
     // Create ticket ()
     const newTicket = {
-      assignerId: loggedInUserId,
+      assignerId: assignerId,
       assigneeId: assigneeId,
       householdId: householdId,
       category: category,
