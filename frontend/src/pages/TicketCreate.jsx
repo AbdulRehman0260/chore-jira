@@ -172,7 +172,7 @@ const TicketCreate = () => {
 
                 <button
                     type="submit"
-                    className='w-full bg-brand-primary text-white py-2 px-4 rounded-md hover:bg-brand-primary-light transition-colors duration-200 font-medium'
+                    className='w-full bg-brand-primary text-white py-2 px-4 rounded-md hover:bg-brand-primary-light transition-colors duration-200 font-medium hover:cursor-pointer'
                 >
                     Create Ticket
                 </button>

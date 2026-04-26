@@ -31,12 +31,93 @@ const HomePage = () => {
                         typeCard='Assigned' />
                 </div>
             </div>
-            <div className='flex justify-center mt-2'>
+            <div className='flex justify-center gap-4 mt-6'>
                 <button className='bg-brand-primary text-white p-2 rounded-sm hover:bg-brand-primary-light cursor-pointer'
                     onClick={() => navigate('/ticket-create')}
                 >
                     Create a Ticket
                 </button>
+                <button
+                    className='bg-brand-accent text-white p-2 rounded-sm hover:bg-brand-accent-hover cursor-pointer flex items-center gap-2'
+                    onClick={() => navigate('/ticket-dashboard')}
+                >
+                    View Dashboard
+                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                    </svg>
+                </button>
+            </div>
+
+            {/* Footer Section */}
+            <div className='bg-brand-primary text-white py-12 mt-16'>
+                <div className='container mx-auto px-4'>
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+                        {/* About Section */}
+                        <div>
+                            <h3 className='text-xl font-semibold mb-4 text-brand-accent'>About Kaam Chore</h3>
+                            <p className='text-brand-surface leading-relaxed'>
+                                Simplify household task management with our intuitive ticketing system.
+                                Assign chores, track progress, and keep your home running smoothly.
+                            </p>
+                        </div>
+
+                        {/* Features Section */}
+                        <div>
+                            <h3 className='text-xl font-semibold mb-4 text-brand-accent'>Features</h3>
+                            <ul className='space-y-2 text-brand-surface'>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Easy ticket creation
+                                </li>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Household member assignment
+                                </li>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Points-based tracking
+                                </li>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Due date management
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Stats Section */}
+                        <div>
+                            <h3 className='text-xl font-semibold mb-4 text-brand-accent'>Why Choose Us</h3>
+                            <ul className='space-y-2 text-brand-surface'>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Family-friendly interface
+                                </li>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Fair task distribution
+                                </li>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Progress tracking
+                                </li>
+                                <li className='flex items-center'>
+                                    <span className='w-2 h-2 bg-brand-accent rounded-full mr-2'></span>
+                                    Motivational points system
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Bottom Bar */}
+                    <div className='border-t border-brand-primary-dark mt-8 pt-8 text-center'>
+                        <p className='text-brand-surface text-sm'>
+                            © 2024 Kaam Chore. Making household management simple.
+                        </p>
+                        <p className='text-brand-surface text-xs mt-2'>
+                            Built with ❤️ for families everywhere
+                        </p>
+                    </div>
+                </div>
             </div>
         </>
 
