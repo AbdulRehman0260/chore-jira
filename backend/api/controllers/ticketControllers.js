@@ -97,6 +97,18 @@ export const getTicketsByUserId = async (req, res) => {
   }
 }
 
+//Get all tickets given a userId
+export const getTicketsByUserIdDash = async (req, res) => {
+  try {
+    const user_id = req.user.user
+    console.log(user_id)
+    const tickets = await Ticket.find({ assigneeId: user_id })
+    return res.status(200).json(tickets)
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
 //Get all tickets given a householdId
 export const getTicketsByHouseholdId = async (req, res) => {
   try {

@@ -3,6 +3,7 @@ import {
     getUserHouseholds,
     getHouseholdUsers,
     getTicketsByUserId,
+    getTicketsByUserIdDash,
     getTicketsByHouseholdId,
     createTicket,
     updateTicket
@@ -24,6 +25,8 @@ ticketRouter.post("/", createTicket);
 
 // Get tickets (by logged in userId)
 ticketRouter.get("/", getTicketsByUserId);
+ticketRouter.get("/user", getTicketsByUserIdDash);
+
 
 // Get tickets by householdId
 ticketRouter.get("/household/:householdId", getTicketsByHouseholdId);
