@@ -80,14 +80,61 @@ export const userPoints = async (req, res) => {
   try {
     console.log("Points endpoint hit");
 
-    // Handle missing points field for existing users
-    const points = req.user?.points || 0;
-    console.log("User points:", points);
+    // Fetch fresh user data from database to get updated points
+    const freshUser = await Customer.findById(req.user.user);
+    const points = freshUser?.points || 0;
+    console.log("Fresh user points from database:", points);
 
     return res.status(200).json({ points: points });
 
   } catch (error) {
     console.error("Error fetching user points:", error);
     return res.status(500).json({ error: "Failed to fetch points" });
+  }
+}
+
+export const userLogout = async (req, res) => {
+  try {
+    console.log("Logout endpoint hit");
+
+    // Clear the authentication cookie
+    res.clearCookie("token");
+
+    return res.status(200).json({ message: "Logged out successfully" });
+
+  } catch (error) {
+    console.error("Error during logout:", error);
+    return res.status(500).json({ error: "Failed to logout" });
+  }
+}
+
+export const checkAuthStatus = async (req, res) => {
+  try {
+    console.log("Auth status check endpoint hit");
+
+    // If we reach here, the middleware has already validated the token
+    // and attached the user to req.user
+    if (req.user && req.user.user) {
+      // Fetch fresh user data from database
+      const freshUser = await Customer.findById(req.user.user);
+      if (freshUser) {
+        return res.status(200).json({
+          authenticated: true,
+          user: {
+            _id: freshUser._id,
+            name: freshUser.name,
+            email: freshUser.email,
+            status: freshUser.status,
+            points: freshUser.points
+          }
+        });
+      }
+    }
+
+    return res.status(200).json({ authenticated: false, user: null });
+
+  } catch (error) {
+    console.error("Error checking auth status:", error);
+    return res.status(500).json({ authenticated: false, user: null });
   }
 }
