@@ -1,11 +1,15 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
+import HomeManagement from '../components/HomeManagement'
 import choresImage from '../lib/images/chores.svg'
 import Card from '../components/Card'
 import { useNavigate } from 'react-router-dom'
+import { useHouseholdStore } from '../store/useHouseholdStore'
 
 const HomePage = () => {
     const navigate = useNavigate()
+    const { household } = useHouseholdStore()
+
     return (
         <>
             <NavBar />
@@ -21,31 +25,45 @@ const HomePage = () => {
                     </h1>
                 </div>
             </div>
-            <div className='flex items-center justify-center gap-4 px-4'>
-                <div className='w-1/2'>
-                    <Card text='Pending Tickets'
-                        typeCard='Pending' />
+
+            <div className='container mx-auto px-4 py-8'>
+                {/* Home Management Section */}
+                <div className='mb-8'>
+                    <HomeManagement />
                 </div>
-                <div className='w-1/2'>
-                    <Card text='Assigned Tickets'
-                        typeCard='Assigned' />
-                </div>
-            </div>
-            <div className='flex justify-center gap-4 mt-6'>
-                <button className='bg-brand-primary text-white p-2 rounded-sm hover:bg-brand-primary-light cursor-pointer'
-                    onClick={() => navigate('/ticket-create')}
-                >
-                    Create a Ticket
-                </button>
-                <button
-                    className='bg-brand-accent text-white p-2 rounded-sm hover:bg-brand-accent-hover cursor-pointer flex items-center gap-2'
-                    onClick={() => navigate('/ticket-dashboard')}
-                >
-                    View Dashboard
-                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                    </svg>
-                </button>
+
+                {/* Only show ticket stats and actions if user has a household */}
+                {household && (
+                    <>
+                        <div className='flex items-center justify-center gap-4 px-4 mb-6'>
+                            <div className='w-1/2'>
+                                <Card text='Pending Tickets'
+                                    typeCard='Pending' />
+                            </div>
+                            <div className='w-1/2'>
+                                <Card text='Assigned Tickets'
+                                    typeCard='Assigned' />
+                            </div>
+                        </div>
+
+                        <div className='flex justify-center gap-4'>
+                            <button className='bg-brand-primary text-white p-2 rounded-sm hover:bg-brand-primary-light cursor-pointer'
+                                onClick={() => navigate('/ticket-create')}
+                            >
+                                Create a Ticket
+                            </button>
+                            <button
+                                className='bg-brand-accent text-white p-2 rounded-sm hover:bg-brand-accent-hover cursor-pointer flex items-center gap-2'
+                                onClick={() => navigate('/ticket-dashboard')}
+                            >
+                                View Dashboard
+                                <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                                </svg>
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
 
             {/* Footer Section */}

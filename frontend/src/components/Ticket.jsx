@@ -1,7 +1,22 @@
 import React from 'react'
 
-const Ticket = ({ data }) => {
+const Ticket = ({ data, onClick }) => {
     console.log('Ticket data:', data) // Debug log to see what data we're getting
+
+    const getStatusColor = (status) => {
+        switch (status?.toLowerCase()) {
+            case 'done':
+                return 'bg-green-100 text-green-800'
+            case 'open':
+            case 'in-progress':
+                return 'bg-yellow-100 text-yellow-800'
+            case 'blocked':
+                return 'bg-red-100 text-red-800'
+            default:
+                return 'bg-gray-100 text-gray-800'
+        }
+    }
+
     const formatCategoryName = (category) => {
         const categoryMap = {
             "LAUNDRY_WASHING": "Laundry Washing",
@@ -39,14 +54,17 @@ const Ticket = ({ data }) => {
         })
     }
     return (
-        <div className='bg-white border border-gray-200 rounded shadow-sm p-3 w-80'>
+        <div
+            className='bg-white border border-gray-200 rounded shadow-sm p-3 w-80 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-gray-300 hover:scale-105'
+            onClick={() => onClick && onClick(data)}
+        >
             {/* Ticket Header */}
             <div className='flex items-center justify-between mb-2'>
                 <div className='flex items-center gap-2'>
                     <div className='bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-xs font-medium'>
                         TASK-123
                     </div>
-                    <span className='bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-xs font-medium'>
+                    <span className={`${getStatusColor(data.status)} px-1.5 py-0.5 rounded text-xs font-medium`}>
                         {data.status || "In Progress"}
                     </span>
                 </div>

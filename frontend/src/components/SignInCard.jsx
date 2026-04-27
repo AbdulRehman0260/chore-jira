@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
+import { useNavigate } from 'react-router-dom'
 import { axiosInstance } from '../lib/axios'
 
 const SignInCard = () => {
@@ -11,6 +12,7 @@ const SignInCard = () => {
 
     //global auth state
     const { isLoading, isAuthenticated, setUser, setAuthenticated, setLoading } = useAuthStore()
+    const navigate = useNavigate()
 
     //using reacts event object to change local state
     const handleChange = (e) => {
@@ -87,7 +89,11 @@ const SignInCard = () => {
                 )}
                 <div className="flex justify-center gap-2">
                     <p className="text-sm">Dont have an account yet?</p>
-                    <button className="text-sm text-brand-accent hover:text-brand-accent-hover cursor-pointer">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/signup')}
+                        className="text-sm text-brand-accent hover:text-brand-accent-hover cursor-pointer"
+                    >
                         Sign up
                     </button>
                 </div>

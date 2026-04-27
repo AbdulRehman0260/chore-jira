@@ -36,26 +36,26 @@ const Card = ({ text, typeCard }) => {
     // Add null check to prevent errors
     if (!household) {
         return (
-            <div className='flex justify-center items-center h-20 bg-brand-surface text-black rounded-sm'>
-                <span className='px-4 font-bold'>{text}</span>
-                <span className='font-bold'>...</span>
+            <div className='flex justify-center items-center h-16 bg-brand-surface text-black rounded-sm'>
+                <span className='text-sm font-medium'>{text}</span>
+                <span className='text-sm font-bold ml-2'>...</span>
             </div>
         )
     }
     if (typeCard == 'Assigned') {
         return (
-            <div className='flex justify-center items-center h-20 bg-brand-surface text-black rounded-sm'>
-                <span className='px-4 font-bold'>{text}</span>
-                <span className='font-bold'>{assignedTickets}</span>
+            <div className='flex justify-center items-center h-16 bg-brand-surface text-black rounded-sm'>
+                <span className='text-sm font-medium'>{text}</span>
+                <span className='text-sm font-bold ml-2'>{assignedTickets}</span>
             </div>
         )
     }
 
     if (typeCard == 'Pending') {
         return (
-            <div className='flex justify-center items-center h-20 bg-brand-surface text-black rounded-sm'>
-                <span className='px-4 font-bold'>{text}</span>
-                <span className='font-bold'>{pendingTickets}</span>
+            <div className='flex justify-center items-center h-16 bg-brand-surface text-black rounded-sm'>
+                <span className='text-sm font-medium'>{text}</span>
+                <span className='text-sm font-bold ml-2'>{pendingTickets}</span>
             </div>
         )
     }

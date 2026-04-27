@@ -1,5 +1,6 @@
 import { Membership } from "../../db/models/membershipModel.js";
 import { Ticket } from "../../db/models/ticketModel.js";
+import { Customer } from "../../db/models/userModel.js";
 
 /*Ticket creation flow:
 1. GET /api/tickets/households - Get user's households (for dropdown)
@@ -126,7 +127,7 @@ export const getTicketsByHouseholdId = async (req, res) => {
 export const updateTicket = async (req, res) => {
   try {
     const { ticketId } = req.params
-    const { status, description, points, dueDate, assigneeName } = req.body
+    const { status, category, description, points, dueDate, assigneeId, assigneeName } = req.body
     const user_id = req.user.user
 
     // Check if ticket exists
@@ -145,12 +146,39 @@ export const updateTicket = async (req, res) => {
       return res.status(403).json({ error: "You don't belong to this household" })
     }
 
+    // Check if ticket is being completed and award points
+    const isBeingCompleted = status === "DONE" && ticket.status !== "DONE"
+
+    console.log("Points awarding check:", {
+      newStatus: status,
+      oldStatus: ticket.status,
+      isBeingCompleted: isBeingCompleted,
+      ticketPoints: ticket.points,
+      assigneeId: ticket.assigneeId
+    })
+
+    if (isBeingCompleted) {
+      // Add ticket points to assignee's total
+      console.log(`Awarding points: ticket=${ticketId}, assignee=${ticket.assigneeId}, points=${ticket.points}`)
+
+      const result = await Customer.findByIdAndUpdate(
+        ticket.assigneeId,
+        { $inc: { points: ticket.points } },
+        { returnDocument: 'after' }
+      )
+
+      console.log(`Points awarded successfully. User ${ticket.assigneeId} now has ${result.points} points`)
+    }
+
     // Prepare update object
     const updateData = {}
     if (status) updateData.status = status
+    if (category) updateData.category = category
     if (description) updateData.description = description
     if (points) updateData.points = points
     if (dueDate) updateData.dueDate = new Date(dueDate)
+    if (assigneeId) updateData.assigneeId = assigneeId
+    if (assigneeName) updateData.assigneeName = assigneeName
 
     const updatedTicket = await Ticket.findByIdAndUpdate(
       ticketId,
