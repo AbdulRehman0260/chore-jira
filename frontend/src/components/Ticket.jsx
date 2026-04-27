@@ -1,6 +1,43 @@
 import React from 'react'
 
 const Ticket = ({ data }) => {
+    console.log('Ticket data:', data) // Debug log to see what data we're getting
+    const formatCategoryName = (category) => {
+        const categoryMap = {
+            "LAUNDRY_WASHING": "Laundry Washing",
+            "LAUNDRY_DRYING": "Laundry Drying",
+            "LAUNDRY_FOLDING": "Laundry Folding",
+            "IRONING_CLOTHES": "Ironing Clothes",
+            "WASHING_DISHES": "Washing Dishes",
+            "CLEANING_KITCHEN_TOPS": "Cleaning Kitchen Tops",
+            "MAKING_DINNER": "Making Dinner",
+            "TAKING_OUT_TRASH": "Taking Out Trash",
+            "VACUUMING": "Vacuuming",
+            "CLEAN_BEDROOM": "Clean Bedroom",
+            "CLEAN_LOUNGE": "Clean Lounge",
+            "CLEAN_MASTER_BATHROOM": "Clean Master Bathroom",
+            "CLEAN_ENSUITE_BATHROOM": "Clean Ensuite Bathroom",
+            "PICKUP_HALAS_TOYS": "Pickup Hala's Toys",
+            "HALA_NAPPY_CHANGE": "Hala Nappy Change",
+            "HALA_PUTTING_TO_BED": "Hala Putting to Bed",
+            "HALA_STERILIZE_TEETHERS_BOTTLES": "Hala Sterilize Teethers/Bottles",
+            "HALA_BATHING": "Hala Bathing",
+            "CHECKING_MAIL": "Checking Mail",
+            "WATER_PLANTS": "Water Plants",
+            "OTHER": "Other"
+        }
+        return categoryMap[category] || category
+    }
+
+    const formatDate = (dateString) => {
+        if (!dateString) return "No due date"
+        const date = new Date(dateString)
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        })
+    }
     return (
         <div className='bg-white border border-gray-200 rounded shadow-sm p-3 w-80'>
             {/* Ticket Header */}
@@ -17,12 +54,12 @@ const Ticket = ({ data }) => {
 
             {/* Title */}
             <h3 className='text-sm font-semibold text-gray-900 mb-2 truncate'>
-                {data.category || "Ironing"}
+                {formatCategoryName(data.category)}
             </h3>
 
             {/* Description */}
             <p className='text-xs text-gray-600 mb-3 line-clamp-2'>
-                {data.description || "Take the clothes out of dryer and iron them"}
+                {data.description || "No description provided"}
             </p>
 
             {/* Details */}
@@ -30,19 +67,19 @@ const Ticket = ({ data }) => {
                 <div className='flex items-center gap-2'>
                     <span className='text-gray-400'>🏷️</span>
                     <span className='text-gray-600'>Category:</span>
-                    <span className='text-gray-900 truncate'>{data.category || "Ironing"}</span>
+                    <span className='text-gray-900 truncate'>{formatCategoryName(data.category)}</span>
                 </div>
 
                 <div className='flex items-center gap-2'>
                     <span className='text-gray-400'>👤</span>
                     <span className='text-gray-600'>Assignee:</span>
-                    <span className='text-gray-900 truncate'>{data.assignedTo || "Zarnain Syed"}</span>
+                    <span className='text-gray-900 truncate'>{data.assigneeName || "Unassigned"}</span>
                 </div>
 
                 <div className='flex items-center gap-2'>
                     <span className='text-gray-400'>📅</span>
                     <span className='text-gray-600'>Due:</span>
-                    <span className='text-gray-900'>{data.dueDate || "2025-01-04"}</span>
+                    <span className='text-gray-900'>{formatDate(data.dueDate)}</span>
                 </div>
             </div>
 

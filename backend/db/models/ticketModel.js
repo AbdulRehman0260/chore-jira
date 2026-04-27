@@ -14,6 +14,10 @@ const ticketSchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    assigneeName: {
+        type: String,
+        required: false
+    },
     householdId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Household",

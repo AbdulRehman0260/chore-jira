@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useHouseholdStore } from '../store/useHouseholdStore'
 import { axiosInstance } from '../lib/axios'
 import { useAuthStore } from '../store/useAuthStore'
+import { useNavigate } from 'react-router-dom'
 
 const TicketCreate = () => {
+    const navigate = useNavigate()
     const { user } = useAuthStore()
     const { household } = useHouseholdStore()
     const [people, setPeople] = useState([])
@@ -14,7 +16,8 @@ const TicketCreate = () => {
         category: '',
         description: '',
         dueDate: '',
-        points: 1
+        points: 1,
+        assigneeName: ''
     })
 
     const submit = async (e) => {
@@ -22,6 +25,7 @@ const TicketCreate = () => {
 
         try {
             const response = await axiosInstance.post('/tickets', formData)
+            navigate("/ticket-dashboard")
             console.log('Ticket created:', response.data)
         } catch (error) {
             console.error("Error creating ticket:", error.response?.data || error.message)
@@ -109,7 +113,14 @@ const TicketCreate = () => {
                         name="assign-to"
                         id="assign-to"
                         value={formData.assigneeId}
-                        onChange={(e) => setFormData({ ...formData, assigneeId: e.target.value })}
+                        onChange={(e) => {
+                            const selectedPerson = people.find(person => person._id === e.target.value)
+                            setFormData({
+                                ...formData,
+                                assigneeId: e.target.value,
+                                assigneeName: selectedPerson?.name || selectedPerson?.email || ''
+                            })
+                        }}
                         className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary text-brand-primary bg-white'
                     >
                         <option value="">Select person</option>
