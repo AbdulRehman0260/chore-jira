@@ -2,16 +2,16 @@ import React from 'react'
 import NavBar from '../components/NavBar'
 import CardHolder from '../components/CardHolder'
 
-const Dashboard = () => {
+const AllTickets = () => {
     return (
         <>
             <div><NavBar /></div>
             <div className='flex mt-4 justify-around'>
-                <CardHolder viewAll={false} />
+                <CardHolder viewAll={true} />
             </div>
 
         </>
     )
 }
 
-export default Dashboard
+export default AllTickets

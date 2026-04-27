@@ -52,6 +52,7 @@ export const createTicket = async (req, res) => {
       householdId,
       assignerId,
       assigneeId,
+      assigneeName,
       category,
       description,
       points,
@@ -62,6 +63,7 @@ export const createTicket = async (req, res) => {
     const newTicket = {
       assignerId: assignerId,
       assigneeId: assigneeId,
+      assigneeName: assigneeName,
       householdId: householdId,
       category: category,
       description: description,
@@ -124,7 +126,7 @@ export const getTicketsByHouseholdId = async (req, res) => {
 export const updateTicket = async (req, res) => {
   try {
     const { ticketId } = req.params
-    const { status, description, points, dueDate } = req.body
+    const { status, description, points, dueDate, assigneeName } = req.body
     const user_id = req.user.user
 
     // Check if ticket exists
