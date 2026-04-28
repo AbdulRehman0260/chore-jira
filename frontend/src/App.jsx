@@ -17,19 +17,15 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log('Checking authentication status...')
         const response = await axiosInstance.get('/customers/auth-status')
-        if (response.data && response.data.user) {
-          console.log('User is authenticated:', response.data.user)
+        if (response.data && response.data.authenticated && response.data.user) {
           setUser(response.data.user)
           setAuthenticated(true)
         } else {
-          console.log('User is not authenticated')
           setUser(null)
           setAuthenticated(false)
         }
       } catch (error) {
-        console.log('Auth check failed, user not authenticated:', error)
         setUser(null)
         setAuthenticated(false)
       }

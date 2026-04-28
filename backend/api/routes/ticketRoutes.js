@@ -12,24 +12,21 @@ import { loginMiddleware } from "../../middleware/loginProtectedRoute.js";
 
 const ticketRouter = express.Router();
 
-ticketRouter.use(loginMiddleware);
+//Get all households for the current user
+ticketRouter.get("/households", loginMiddleware, getUserHouseholds);
 
-// Get households for current user (for dropdown)
-ticketRouter.get("/households", getUserHouseholds);
+//Get all users in a specific household
+ticketRouter.get("/household/:householdId/users", loginMiddleware, getHouseholdUsers);
 
-// Get users in a specific household (for assignee dropdown)
-ticketRouter.get("/household/:householdId/users", getHouseholdUsers);
+//Create a ticket
+ticketRouter.post("/", loginMiddleware, createTicket);
 
-// Create a new ticket
-ticketRouter.post("/", createTicket);
-
-// Get tickets (by logged in userId)
+//Get all tickets for a user
 ticketRouter.get("/", getTicketsByUserId);
-ticketRouter.get("/user", getTicketsByUserIdDash);
+ticketRouter.get("/user", loginMiddleware, getTicketsByUserIdDash);
 
-
-// Get tickets by householdId
-ticketRouter.get("/household/:householdId", getTicketsByHouseholdId);
+//Get all tickets for a household
+ticketRouter.get("/household/:householdId", loginMiddleware, getTicketsByHouseholdId);
 
 //updating a ticket
 ticketRouter.patch("/:ticketId", updateTicket);

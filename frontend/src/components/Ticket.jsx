@@ -62,7 +62,7 @@ const Ticket = ({ data, onClick }) => {
             <div className='flex items-center justify-between mb-2'>
                 <div className='flex items-center gap-2'>
                     <div className='bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-xs font-medium'>
-                        TASK-123
+                        TASK
                     </div>
                     <span className={`${getStatusColor(data.status)} px-1.5 py-0.5 rounded text-xs font-medium`}>
                         {data.status || "In Progress"}
