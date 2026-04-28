@@ -64,10 +64,13 @@ export const userLogin = async (req, res) => {
         to see if a cookie exists (user is authenticated) */
     const payload = { user }
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
     res.cookie("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     return res.status(200).json(user);
   } catch (error) {
@@ -112,11 +115,18 @@ export const checkAuthStatus = async (req, res) => {
   try {
     console.log("Auth status check endpoint hit");
 
-    // If we reach here, the middleware has already validated the token
-    // and attached the user to req.user
-    if (req.user && req.user.user) {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(200).json({ authenticated: false, user: null });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (decoded && decoded.user) {
       // Fetch fresh user data from database
-      const freshUser = await Customer.findById(req.user.user);
+      const freshUser = await Customer.findById(decoded.user);
       if (freshUser) {
         return res.status(200).json({
           authenticated: true,
@@ -134,7 +144,7 @@ export const checkAuthStatus = async (req, res) => {
     return res.status(200).json({ authenticated: false, user: null });
 
   } catch (error) {
-    console.error("Error checking auth status:", error);
-    return res.status(500).json({ authenticated: false, user: null });
+    console.log("Auth check failed - user not authenticated:", error.message);
+    return res.status(200).json({ authenticated: false, user: null });
   }
 }

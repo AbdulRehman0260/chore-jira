@@ -1,6 +1,7 @@
 import { Membership } from "../../db/models/membershipModel.js";
 import { Ticket } from "../../db/models/ticketModel.js";
 import { Customer } from "../../db/models/userModel.js";
+import { sendTaskAssignmentEmail } from "../../services/emailService.js";
 
 /*Ticket creation flow:
 1. GET /api/tickets/households - Get user's households (for dropdown)
@@ -60,7 +61,17 @@ export const createTicket = async (req, res) => {
       dueDate
     } = req.body;
 
-    // Create ticket ()
+    // Fetch assignee and assigner details for email
+    const [assignee, assigner] = await Promise.all([
+      Customer.findById(assigneeId).select('name email'),
+      Customer.findById(assignerId).select('name')
+    ]);
+
+    if (!assignee) {
+      return res.status(404).json({ error: "Assignee not found" });
+    }
+
+    // Create ticket
     const newTicket = {
       assignerId: assignerId,
       assigneeId: assigneeId,
@@ -72,9 +83,31 @@ export const createTicket = async (req, res) => {
       dueDate: dueDate ? new Date(dueDate) : undefined
     };
 
-    // TODO: Save ticket to database
+    // Save ticket to database
     const ticket = new Ticket(newTicket);
     await ticket.save();
+
+    // Send email notification to assignee
+    if (assignee.email) {
+      const emailResult = await sendTaskAssignmentEmail(
+        assignee.email,
+        assignee.name,
+        {
+          category: category,
+          description: description,
+          points: points || 2,
+          dueDate: dueDate
+        },
+        assigner.name
+      );
+
+      if (!emailResult.success) {
+        console.error('Failed to send task assignment email:', emailResult.error);
+        // Don't fail the request if email fails, just log it
+      }
+    } else {
+      console.log('Assignee has no email address, skipping email notification');
+    }
 
     return res.status(201).json({
       message: "Ticket created successfully",
@@ -98,7 +131,7 @@ export const getTicketsByUserId = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-}
+};
 
 //Get all tickets given a userId
 export const getTicketsByUserIdDash = async (req, res) => {

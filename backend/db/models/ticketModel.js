@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const ticketSchema = new mongoose.Schema({
-
     assignerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Customer",
@@ -62,8 +61,7 @@ const ticketSchema = new mongoose.Schema({
     dueDate: {
         type: Date
     }
-}
-);
+});
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
 
